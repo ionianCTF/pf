@@ -1,0 +1,18 @@
+version: "3.5"
+
+services :
+  nginx:
+    image: nginx:latest
+    container_name: peopleflows_nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - peopleflows_network
+
+
+networks:
+  peopleflows_network:
+    name: peopleflows_network
+    external: true

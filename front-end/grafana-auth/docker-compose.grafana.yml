@@ -1,0 +1,20 @@
+version: "3.5"
+
+services:
+  grafana:
+    image: grafana/grafana-oss:latest-ubuntu
+    container_name: peopleflows_grafana
+    environment:
+      # - GF_LOG_LEVEL=debug  #higher than INFO
+      - GF_SERVER_ROOT_URL=http://localhost:3000/grafana
+      # - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+    ports:
+      - "3000:3000"
+    networks:
+      - peopleflows_network
+
+networks:
+  peopleflows_network:
+    name: peopleflows_network
+    external: true

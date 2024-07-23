@@ -1,0 +1,17 @@
+version: "3.5"
+
+services:
+  apache:
+    image: httpd:latest
+    container_name: peopleflows_www
+    ports:
+    - '8080:80'
+    volumes:
+    - ./www:/usr/local/apache2/htdocs
+    networks:
+      - peopleflows_network
+
+networks:
+  peopleflows_network:
+    name: peopleflows_network
+    external: true

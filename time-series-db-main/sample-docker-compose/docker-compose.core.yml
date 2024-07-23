@@ -1,0 +1,32 @@
+version: "3.5"
+
+services:
+  mosquitto-basic:
+    image: eclipse-mosquitto:1.6.10
+    container_name: peopleflows_mqtt
+    volumes:
+      - ./mosq.conf:/mosquitto/config/mosquitto.conf
+    ports:
+      - 1883:1883
+    networks:
+      - peopleflows_network
+
+  mysql:
+    image: mysql:8.0.28
+    container_name: peopleflows_mysql
+    environment:
+      - MYSQL_HOST=
+      - MYSQL_DATABASE=peopleflows
+      - MYSQL_USER=dbuser
+      - MYSQL_PASSWORD=jhdasjdgerqe2312
+      - MYSQL_ROOT_PASSWORD=GFTYTDRDTDghfhfh353
+      - TZ='Europe/Athens'
+    ports:
+      - "0.0.0.0:3306:3306"
+    networks:
+      - peopleflows_network
+
+networks:
+  peopleflows_network:
+    name: peopleflows_network
+    driver: bridge

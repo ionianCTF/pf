@@ -1,0 +1,15 @@
+version: "3.5"
+
+services:
+  flask_app:
+    build: .
+    container_name: peopleflows_flask
+    ports:
+      - 5000:5000
+    networks:
+      - peopleflows_network
+
+networks:
+  peopleflows_network:
+    name: peopleflows_network
+    external: true

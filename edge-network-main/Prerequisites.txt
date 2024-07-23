@@ -1,0 +1,88 @@
+--------------------------------------------------------------------------------------------
+Prerequisites for Bluetooth
+--------------------------------------------------------------------------------------------
+
+sudo apt-get update
+sudo apt-get upgrade
+
+if you do not run the commands above you will get this:
+  Unexpected error when scanning: Invalid device: Network is down
+
+sudo apt-get install libbluetooth-dev
+sudo pip3 install git+https://github.com/pybluez/pybluez.git#egg=pybluez --break-system-packages
+sudo pip3 install pygatt --break-system-packages
+
+--------------------------------------------------------------------------------------------
+Prerequisites for WiFi
+--------------------------------------------------------------------------------------------
+sudo pip3 install scapy --break-system-packages
+
+# Create a monitoring interface to scan for wifi devices (NEEDS EXTERNAL ANTENNA!)
+1. sudo nano /etc/network/interfaces (To open the file)
+2. Add at the end of the file:
+ allow-hotplug wlan1
+ iface wlan1 inet manual
+ pre-up iw phy phy1 interface add mon1 type monitor
+ pre-up iw dev wlan1 del
+ pre-up ifconfig mon1 up
+
+3. Save the file (Ctrl + o and  Enter)
+4. Exit the file (Ctlr + x and  Enter)
+
+--------------------------------------------------------------------------------------------
+Prerequisites for MQTT
+--------------------------------------------------------------------------------------------
+sudo pip3 install paho-mqtt --break-system-packages
+
+--------------------------------------------------------------------------------------------
+Changing default values
+--------------------------------------------------------------------------------------------
+To change default values open the consts.py file and edit as you wish.
+
+--------------------------------------------------------------------------------------------
+Install node, npm and pm2
+--------------------------------------------------------------------------------------------
+sudo su
+curl -fsSL https://deb.nodesource.com/setup_21.x | bash -
+sudo npm install pm2@latest -g
+
+--------------------------------------------------------------------------------------------
+Prerequisites for sceduling
+--------------------------------------------------------------------------------------------
+sudo pip3 install schedule --break-system-packages
+
+--------------------------------------------------------------------------------------------
+Runing pm2
+--------------------------------------------------------------------------------------------
+sudo pm2 start pm2.config.js
+
+--------------------------------------------------------------------------------------------
+Monitor apps
+--------------------------------------------------------------------------------------------
+sudo pm2 monit
+
+--------------------------------------------------------------------------------------------
+Make the script persistent
+--------------------------------------------------------------------------------------------
+1. sudo pm2 startup and follow the steps.
+2. start all the processes.
+3. sudo pm2 save
+4. sudo nano /etc/systemd/system/pm2-peopleflows1.service or the equivilent filename to change a few things
+5. change the User to root [User=root]
+6. add this line bellow the ExecStart, ExecStartPost=/bin/chown peopleflows1:peopleflows1 /home/peopleflows1/.pm2/rpc.sock /home/peopleflows1/.pm2/pub.sock (or the equivilent filename)
+7. sudo systemctl daemon-reload
+8. sudo systemctl restart pm2-peopleflows1
+9. Reboot and check if the processes restart (pm2 monit).
+
+--------------------------------------------------------------------------------------------
+Running the only scripts
+--------------------------------------------------------------------------------------------
+1. Run this first to get the broker running and do not terminate the process.
+   python3 mqtt_broker.py
+2. Run the script that does the scanning on a separate prompt using "sudo"
+   sudo python3 bluetooth_scanner.py or sudo python3 wifi_scanner.py
+
+  if you run without "sudo" you will get errors in the WiFi code
+    [Errno 1] Operation not permitted
+  and in the BLE code
+    Unexpected error when scanning: Set scan parameters failed: Operation not permitted

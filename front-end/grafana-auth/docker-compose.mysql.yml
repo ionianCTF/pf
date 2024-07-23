@@ -1,0 +1,21 @@
+version: "3.5"
+
+services:
+  mysql:
+    image: mysql:8.0.28
+    container_name: peopleflows_mysql
+    environment:
+      - MYSQL_HOST=
+      - MYSQL_DATABASE=peopleflows_db
+      - MYSQL_USER=people
+      - MYSQL_PASSWORD=flows
+      - MYSQL_ROOT_PASSWORD=flows
+    ports:
+      - "0.0.0.0:3306:3306"
+    networks:
+      - peopleflows_network
+
+networks:
+  peopleflows_network:
+    name: peopleflows_network
+    external: true

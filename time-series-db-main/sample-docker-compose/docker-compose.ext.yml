@@ -1,0 +1,13 @@
+version: "3.5"
+services:
+  ext:
+    image: ubuntu:latest
+    container_name: peopleflows_ext
+    command: tail -f /dev/null # run indefinetely, operate via a bash terminal
+    networks:
+      - peopleflows_network
+
+networks:
+  peopleflows_network:
+    name: peopleflows_network
+    external: true
